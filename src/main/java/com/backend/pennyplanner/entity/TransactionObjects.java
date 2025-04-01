@@ -1,4 +1,4 @@
-package com.backend.expense.entity;
+package com.backend.pennyplanner.entity;
 
 import java.math.BigInteger;
 import java.util.Date;

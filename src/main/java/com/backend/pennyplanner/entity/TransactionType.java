@@ -1,3 +1,3 @@
-package com.backend.expense.entity;
+package com.backend.pennyplanner.entity;
 
 public enum TransactionType {EXPENSE, INCOME}

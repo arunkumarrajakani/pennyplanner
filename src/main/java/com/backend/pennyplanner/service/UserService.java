@@ -1,4 +1,4 @@
-package com.backend.expense.service;
+package com.backend.pennyplanner.service;
 
 import java.util.List;
 import java.util.Optional;
@@ -8,10 +8,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.backend.expense.Model.ResponseModel;
-import com.backend.expense.Repository.UserRepository;
-import com.backend.expense.entity.User;
-import com.backend.expense.utils.SplitwiseClient;
+import com.backend.pennyplanner.Model.ResponseModel;
+import com.backend.pennyplanner.Repository.UserRepository;
+import com.backend.pennyplanner.entity.User;
 
 @Service
 public class UserService {
@@ -21,7 +20,6 @@ public class UserService {
 	
 	public ResponseEntity<ResponseModel<User>> getUser(Integer id) {
 		ResponseModel<User> responseModel = new ResponseModel();
-        //String response = splitwiseClient.makeRequest(Endpoints.GET_GROUPS, Verb.GET);
         Optional<User> users = userRepository.findById(id);
         if(users.isPresent()) {
         	responseModel.setHttpStatus(HttpStatus.OK);

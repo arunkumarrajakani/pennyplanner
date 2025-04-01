@@ -1,4 +1,4 @@
-package com.backend.expense.Model;
+package com.backend.pennyplanner.Model;
 
 import org.springframework.http.HttpStatus;
 

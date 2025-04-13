@@ -1,0 +1,142 @@
+{
+    "headers": {
+        "Date": [
+            "Tue, 10 Oct 2023 04:02:55 GMT"
+        ],
+        "Content-Type": [
+            "application/json; charset=utf-8"
+        ],
+        "Transfer-Encoding": [
+            "chunked"
+        ],
+        "Connection": [
+            "keep-alive"
+        ],
+        "Vary": [
+            "Accept-Encoding",
+            "Accept"
+        ],
+        "X-Frame-Options": [
+            "SAMEORIGIN"
+        ],
+        "X-Xss-Protection": [
+            "1; mode=block"
+        ],
+        "X-Content-Type-Options": [
+            "nosniff"
+        ],
+        "X-Download-Options": [
+            "noopen"
+        ],
+        "X-Permitted-Cross-Domain-Policies": [
+            "none"
+        ],
+        "Referrer-Policy": [
+            "origin"
+        ],
+        "Content-Disposition": [
+            "inline; filename=\"response.json\""
+        ],
+        "Cache-Control": [
+            "no-store"
+        ],
+        "Pragma": [
+            "no-cache"
+        ],
+        "Expires": [
+            "Fri, 01 Jan 1990 00:00:00 GMT"
+        ],
+        "Etag": [
+            "W/\"736c1828355d260b14dd6d2c21b30404\""
+        ],
+        "X-Request-Id": [
+            "3459c5c6-55e2-47a4-b5bd-93f31b15cb9f"
+        ],
+        "X-Runtime": [
+            "0.070424"
+        ],
+        "Strict-Transport-Security": [
+            "max-age=63072000"
+        ],
+        "Via": [
+            "1.1 vegur"
+        ],
+        "CF-Cache-Status": [
+            "DYNAMIC"
+        ],
+        "Server": [
+            "cloudflare"
+        ],
+        "CF-RAY": [
+            "813bf8764df7c3ff-EWR"
+        ]
+    },
+    "body": {
+        "expenses": [
+            {
+                "id": 2708576930,
+                "group_id": 55415850,
+                "friendship_id": null,
+                "expense_bundle_id": null,
+                "description": "Food",
+                "repeats": false,
+                "repeat_interval": null,
+                "email_reminder": false,
+                "email_reminder_in_advance": -1,
+                "next_repeat": null,
+                "details": null,
+                "comments_count": 0,
+                "payment": false,
+                "creation_method": "equal",
+                "transaction_method": "offline",
+                "transaction_confirmed": false,
+                "transaction_id": null,
+                "transaction_status": null,
+                "cost": "10.0",
+                "currency_code": "USD",
+                "repayments": [],
+                "date": "2023-10-10T03:52:28Z",
+                "created_at": "2023-10-10T03:53:45Z",
+                "created_by": {
+                    "id": 77509360,
+                    "first_name": "expenseTracker",
+                    "last_name": null,
+                    "picture": {
+                        "medium": "https://s3.amazonaws.com/splitwise/uploads/user/default_avatars/avatar-teal16-100px.png"
+                    },
+                    "custom_picture": false
+                },
+                "updated_at": "2023-10-10T03:53:45Z",
+                "updated_by": null,
+                "deleted_at": null,
+                "deleted_by": null,
+                "category": {
+                    "id": 18,
+                    "name": "General"
+                },
+                "receipt": {
+                    "large": null,
+                    "original": null
+                },
+                "users": [
+                    {
+                        "user": {
+                            "id": 77509360,
+                            "first_name": "expenseTracker",
+                            "last_name": null,
+                            "picture": {
+                                "medium": "https://s3.amazonaws.com/splitwise/uploads/user/default_avatars/avatar-teal16-100px.png"
+                            }
+                        },
+                        "user_id": 77509360,
+                        "paid_share": "10.0",
+                        "owed_share": "10.0",
+                        "net_balance": "0.0"
+                    }
+                ]
+            }
+        ]
+    },
+    "statusCode": "OK",
+    "statusCodeValue": 200
+}

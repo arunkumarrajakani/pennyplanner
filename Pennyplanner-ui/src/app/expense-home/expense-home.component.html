@@ -1,0 +1,173 @@
+<div class="nav">
+  Pennyplanner App
+</div>
+
+<mat-toolbar>
+  <span (click)="goHome()" class="button-disp">Home</span>
+  <span (click)="goDetails()" class="mat-toolbar-menu button-disp">Details</span>
+  
+</mat-toolbar>
+
+
+
+<!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous"> -->
+ <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+  <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
+</svg>
+<div>
+  <canvasjs-chart [options]="expenseChartOptions" [styles]="{width: '100%', height:'360px', absolute:true}" (chartInstance)="getExpenseChartInstance($event)"></canvasjs-chart>
+
+  <canvasjs-chart [options]="incomeChartOptions" [styles]="{width: '100%', height:'360px'}" (chartInstance)="getIncomeChartInstance($event)"></canvasjs-chart>
+</div>
+<div>
+  <button (click)="create()" style="margin-left: 87%;margin-top: 50px;">Create Transaction</button>
+</div>
+
+<table class="table table-dark">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Detail</th>
+      <th scope="col">Cost</th>
+      <th scope="col">Transaction Type</th>
+      <th scope="col">Transaction Source</th>
+      <th scope="col">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let item of tableValues; let i = index">
+      <th scope="row">{{i+1}}</th>
+      <td>{{item.transactionDetail}}</td>
+      <td>{{item.trasactionCost}}</td>
+      <td>{{item.transactionType}}</td>
+      <td>{{item.transactionSource}}</td>
+      <td><div *ngIf="item.transactionSource === 'Pennyplanner App'"><i class="bi bi-pencil-fill" (click)="openPopup(item)"></i> &nbsp;<i class="bi bi-trash3-fill" (click)="deleteExpense(item)"></i></div></td>
+    </tr>
+  </tbody>
+</table>
+
+
+
+
+<!-- <h3>Please click on the below button open popup</h3>
+<hr />
+<button
+  style="margin: 50px; padding: 10px"
+  type="button"
+  class="btn btn-primary"
+  (click)="openPopup()">Show Data
+</button> -->
+<!-- <div
+  class="modal"
+  tabindex="-1"
+  role="dialog"
+  [ngStyle]="{'display':displayStyle}">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">GeeksForGeeks</h4>
+      </div>
+      <div class="modal-body">
+        <p>One Stop Solution for all CS problems</p>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger"
+                (click)="closePopup()">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div> -->
+
+<div class="modal" id="alertModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"
+[ngStyle]="{'display':displayAlertStyle}">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <span>{{modalText}}</span>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeAlertPopup()">Close</button>
+      </div>
+      </div>
+      </div>
+      </div>
+
+<div class="modal" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"
+[ngStyle]="{'display':displayStyle}">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Edit Expense</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closePopup()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="myGroup">
+          <div class="form-group">
+            <label for="detail" class="col-form-label">Detail :</label>
+            <input formControlName="trasactionDetail" type="text" class="form-control" id="detail">
+          </div>
+          <div class="form-group">
+            <label for="cost" class="col-form-label">Cost :</label>
+            <input formControlName="transactionCost" type="text" class="form-control" id="cost">
+          </div>
+          <div class="form-group">
+            <label for="expense-type" class="col-form-label">Expense Type :</label>
+            <input formControlName="transactionType" type="text" class="form-control" id="expense-type">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closePopup()">Close</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="saveExpenseChanges()">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+   <!-- Create Transaction modal window -->
+<div class="modal" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"
+[ngStyle]="{'display':displayCreateModalStyle}">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Create Expense</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeCreatePopup()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="createTransactionGroup">
+          <div class="form-group">
+            <label for="expense-type" class="col-form-label">Transaction Type :</label>
+            <select id="cars" name="cars" formControlName="transactionType" class="form-control" id="expense-type">
+              <option value="EXPENSE">Expense</option>
+              <option value="INCOME">Income</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="detail" class="col-form-label">Detail :</label>
+            <input formControlName="trasactionDetail" type="text" class="form-control" id="detail">
+          </div>
+          <div class="form-group">
+            <label for="cost" class="col-form-label">Cost :</label>
+            <input formControlName="transactionCost" type="text" class="form-control" id="cost">
+          </div>
+          <div class="form-group">
+            <label for="transactionDate" class="col-form-label">Date :</label>
+            <input formControlName="transactionDate" type="date" class="form-control" id="date">
+          </div>
+          
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeCreatePopup()">Close</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="createTransaction()">Save</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,68 @@
+<!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+<form [formGroup]="myGroup" class="row g-3" (ngSubmit)="onSubmit()">
+   <h1 class="h3 mb-3 font-weight-normal">Signup</h1> 
+   <div class="col-md-6">
+    <label for="inputName4" class="form-label">Full Name</label>
+    <input formControlName="name" id="fullName" class="form-control" id="inputName4" required autofocus>
+    </div>
+    <div class="col-md-6">
+    <label for="inputEmail4" class="form-label">Email</label>
+    <input formControlName="email" type="email" id="inputEmail4" class="form-control" placeholder="Email address" required>
+    </div>
+    <div class="col-md-6">
+      <label for="inputPassword4" class="form-label">Password</label>
+      <input formControlName="password" type="password" id="inputPassword4" class="form-control" placeholder="Password" required >
+    </div>
+    <div class="col-md-6">
+      <label for="splitwiseKey" class="form-label">Splitwise Key</label>
+      <input formControlName="splitwiseKey" id="splitwiseKey" class="form-control" required>
+    </div> 
+  <div class="col-md-6">
+    <label for="inputName4" class="form-label">Full Name</label>
+    <input type="name" formControlName="name" class="form-control" id="inputName4">
+  </div>
+  <div class="col-md-6">
+    <label for="inputEmail4" class="form-label">Email</label>
+    <input type="email" formControlName="email" class="form-control" id="inputEmail4">
+  </div>
+  <div class="col-md-6">
+    <label for="inputPassword4" class="form-label">Password</label>
+    <input type="password" formControlName="password" class="form-control" id="inputPassword4">
+  </div>
+  <div class="col-md-6">
+    <label for="splitwiseKey" class="form-label">Splitwise Key</label>
+    <input formControlName="splitwiseKey" class="form-control" id="splitwiseKey">
+  </div>
+  <div class="col-12">
+    <button type="submit" class="btn btn-primary">Sign up</button>
+  </div>
+</form> -->
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+<form class="row g-3">
+  <h1 class="h3 mb-3 font-weight-normal" style="text-align: center;">Signup</h1>
+  <div class="col-md-6">
+    <label for="inputName4" class="form-label">Full Name</label>
+    <input type="name" [formControl]="fullName" class="form-control" id="inputName4" required>
+  </div>
+  <div class="col-md-6">
+    <label for="inputEmail4" class="form-label">Email</label>
+    <!-- <input type="email" [formControl]="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" class="form-control" id="inputEmail4" required> -->
+    <input matInput  class="form-control" [formControl]="email" required>
+    
+     <span *ngIf="email.invalid" style="color:red;"> {{getErrorMessageS}}</span>
+    
+  </div>
+  <div class="col-md-6">
+    <label for="inputPassword4" class="form-label">Password</label>
+    <input type="password" [formControl]="password" class="form-control" id="inputPassword4" required>
+    
+  </div>
+  <div class="col-md-6">
+    <label for="splitwiseKey" class="form-label">Splitwise Key</label>
+    <input type="password" [formControl]="splitwiseKey" class="form-control" id="splitwiseKey" required>
+  </div>
+  <div class="col-12">
+    <button type="submit" class="btn btn-primary" (click)="onSubmit()">Sign up</button>
+  </div>
+</form>

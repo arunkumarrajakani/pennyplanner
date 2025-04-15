@@ -1,6 +1,6 @@
 package com.backend.pennyplanner.controller;
 
-import com.backend.pennyplanner.model.ResponseModel;
+import com.backend.pennyplanner.Model.ResponseModel;
 import com.backend.pennyplanner.Repository.ExpenseRepository;
 import com.backend.pennyplanner.Repository.UserRepository;
 import com.backend.pennyplanner.entity.Expense;

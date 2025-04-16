@@ -8,7 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.backend.pennyplanner.model.ResponseModel;
+import com.backend.pennyplanner.Model.ResponseModel;
 import com.backend.pennyplanner.Repository.UserRepository;
 import com.backend.pennyplanner.entity.User;
 

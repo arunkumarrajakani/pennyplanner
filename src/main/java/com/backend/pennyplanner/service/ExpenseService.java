@@ -13,7 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.backend.pennyplanner.model.ResponseModel;
+import com.backend.pennyplanner.Model.ResponseModel;
 import com.backend.pennyplanner.Repository.ExpenseRepository;
 import com.backend.pennyplanner.Repository.UserRepository;
 import com.backend.pennyplanner.entity.Expense;
@@ -29,6 +29,9 @@ public class ExpenseService {
 
     @Autowired
     private UserRepository userRepository;
+    
+    @Autowired
+    SplitwiseService splitwiseService;
 	
 	public ResponseModel<TransactionObjects> createExpense(TransactionObjects transactionObject){
 		
@@ -170,7 +173,29 @@ public class ExpenseService {
         int currentYear = currentDate.getYear();
         ResponseEntity<Object> spliwiseExpenses = null;
         List<LinkedHashMap> expensesList = new ArrayList<>();
+        try {
+            spliwiseExpenses = splitwiseService.getExpensesForUser(user);
+             expensesList = (List<LinkedHashMap>) ((LinkedHashMap)spliwiseExpenses.getBody()).get("expenses");
+           }catch(Exception e) {
+           	System.out.println(e.getMessage());
+           }
            List<TransactionObjects> transactionData = new ArrayList<>();
+           for(LinkedHashMap expense : expensesList){
+               TransactionObjects transactionObjects = new TransactionObjects();
+               transactionObjects.setTransactionId(BigInteger.valueOf((Long) expense.get("id")));
+               transactionObjects.setTransactionDetail((String) expense.get("description"));
+               transactionObjects.setTransactionType(TransactionType.EXPENSE);
+               final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
+               transactionObjects.setTransactionDate(sdf.parse((String)expense.get("date")));
+               if(!(sdf.parse((String)expense.get("date")).getYear() == currentYear)) {
+            	   continue;
+               }
+               transactionObjects.setTrasactionCost(Double.valueOf( (String)expense.get("cost")));
+               transactionObjects.setTransactionCategory((String) ((LinkedHashMap)expense.get("category")).get("name"));
+               transactionObjects.setTransactionSource("Splitwise");
+               transactionObjects.setUserId(user.getUserId());
+               transactionData.add(transactionObjects);
+           }
            List<Expense> expenses = new ArrayList<Expense>();
         try {
            expenses = expenseRepository.findByUserId(user.getUserId());
@@ -216,8 +241,32 @@ public class ExpenseService {
         System.out.println("currentmonth id : " + currentMonth);
         ResponseEntity<Object> spliwiseExpenses = null;
         List<LinkedHashMap> expensesList = new ArrayList<>();
-
+        try {
+            spliwiseExpenses = splitwiseService.getExpensesForUser(user);
+             expensesList = (List<LinkedHashMap>) ((LinkedHashMap)spliwiseExpenses.getBody()).get("expenses");
+           }catch(Exception e) {
+           	System.out.println(e.getMessage());
+           }
            List<TransactionObjects> transactionData = new ArrayList<>();
+           for(LinkedHashMap expense : expensesList){
+               TransactionObjects transactionObjects = new TransactionObjects();
+               final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
+               transactionObjects.setTransactionDate(sdf.parse((String)expense.get("date")));
+               if(!(sdf.parse((String)expense.get("date")).getMonth() == currentMonth)) {
+            	   continue;
+               }
+               if(transactionObjects.getTransactionDate().getYear() != currentDate.getYear()) {
+            	   continue;
+               }
+               transactionObjects.setTransactionId(BigInteger.valueOf((Long) expense.get("id")));
+               transactionObjects.setTransactionDetail((String) expense.get("description"));
+               transactionObjects.setTransactionType(TransactionType.EXPENSE);               
+               transactionObjects.setTrasactionCost(Double.valueOf( (String)expense.get("cost")));
+               transactionObjects.setTransactionCategory((String) ((LinkedHashMap)expense.get("category")).get("name"));
+               transactionObjects.setTransactionSource("Splitwise");
+               transactionObjects.setUserId(user.getUserId());
+               transactionData.add(transactionObjects);
+           }
            List<Expense> expenses = new ArrayList<>();
            try {
         	   expenses = expenseRepository.findByUserId(user.getUserId());
@@ -248,4 +297,73 @@ public class ExpenseService {
 		return responseModel;
 	}
 	
+	public ResponseModel<List<TransactionObjects>> getGivenMonthDetails(Integer id, Integer monthId) throws Exception{
+		ResponseModel<List<TransactionObjects>> responseModel = new ResponseModel<List<TransactionObjects>>();
+        User user = userRepository.getById(id);
+        if(user == null) {			
+	    	responseModel.setHttpStatus(HttpStatus.BAD_REQUEST);
+			responseModel.setResponseMessage("Unable to find the user");
+			responseModel.setResponseStatus("FAILED");
+			responseModel.setResponseBody(null);
+			return responseModel;
+		}
+        System.out.println("month id : " + monthId);
+        Date currentDate = new Date();
+        ResponseEntity<Object> spliwiseExpenses = null;
+        List<LinkedHashMap> expensesList = new ArrayList<>();
+        try {
+         spliwiseExpenses = splitwiseService.getExpensesForUser(user);
+         System.out.println("spliwise expense obj : " + spliwiseExpenses);
+          expensesList = (List<LinkedHashMap>) ((LinkedHashMap)spliwiseExpenses.getBody()).get("expenses");
+        }catch(Exception e) {
+        	System.out.println(e.getMessage());
+        }
+           List<TransactionObjects> transactionData = new ArrayList<>();
+           for(LinkedHashMap expense : expensesList){
+               TransactionObjects transactionObjects = new TransactionObjects();
+               final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
+               transactionObjects.setTransactionDate(sdf.parse((String)expense.get("date")));
+               if((sdf.parse((String)expense.get("date")).getMonth() != (monthId-1))) {
+            	   continue;
+               }
+               if(transactionObjects.getTransactionDate().getYear() != currentDate.getYear()) {
+            	   continue;
+               }
+               transactionObjects.setTransactionId(BigInteger.valueOf((Long) expense.get("id")));
+               transactionObjects.setTransactionDetail((String) expense.get("description"));
+               transactionObjects.setTransactionType(TransactionType.EXPENSE);               
+               transactionObjects.setTrasactionCost(Double.valueOf( (String)expense.get("cost")));
+               transactionObjects.setTransactionCategory((String) ((LinkedHashMap)expense.get("category")).get("name"));
+               transactionObjects.setTransactionSource("Splitwise");
+               transactionObjects.setUserId(user.getUserId());
+               transactionData.add(transactionObjects);
+           }
+           List<Expense> expenses = new ArrayList<>();
+           try {
+        	   expenses = expenseRepository.findByUserId(user.getUserId());
+           }catch(Exception e) {
+        	   e.printStackTrace();
+           }
+        
+        for(Expense expense : expenses){
+        	if((expense.getTransactionDate().getMonth() != (monthId-1))) {
+        		continue;
+        	}
+            TransactionObjects transactionObjects = new TransactionObjects();
+            transactionObjects.setTransactionDetail(expense.getDetail());
+            transactionObjects.setTransactionId(BigInteger.valueOf(expense.getId().intValue()));
+            transactionObjects.setTransactionDate(expense.getTransactionDate());
+            transactionObjects.setTransactionType(expense.getTransactionType());
+            transactionObjects.setTransactionCategory(expense.getCategory());
+            transactionObjects.setTrasactionCost(expense.getCost());
+            transactionObjects.setTransactionSource("Expense App");
+            transactionObjects.setUserId(user.getUserId());
+            transactionData.add(transactionObjects);
+        }
+        responseModel.setHttpStatus(HttpStatus.OK);
+		responseModel.setResponseMessage("Successfully retrieved user details");
+		responseModel.setResponseStatus("SUCCESS");
+		responseModel.setResponseBody(transactionData);
+		return responseModel;
+	}
 }
